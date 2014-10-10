@@ -7,6 +7,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 
 import au.com.bytecode.opencsv.CSVReader;
+import uidai.explore.dataloader.DataLoader1NF;
 import uidai.explore.intf.IDataLoader;
 
 public final class CSVParser {
@@ -14,10 +15,10 @@ public final class CSVParser {
 	private static IDataLoader s_dataLoader;
 	
 	static {
-		
+		s_dataLoader = new DataLoader1NF();
 	}
 	
-	public static void loadCSVFilesToDatabase(String database, File csvDirectory) throws IOException{
+	public static void loadCSVFilesToDatabase(/*String database,*/ File csvDirectory) throws IOException{
 		if (!csvDirectory.isDirectory())
 			throw new RuntimeException("Specified file is not a directory");
 		
@@ -30,7 +31,7 @@ public final class CSVParser {
 		
 		CSVReader reader = null;
 		for (File file: files){
-			reader = new CSVReader(new FileReader(file));
+			reader = new CSVReader(new FileReader(file), CSVReader.DEFAULT_SEPARATOR, CSVReader.DEFAULT_QUOTE_CHARACTER, 1);
 			s_dataLoader.loadUidaiData(reader.readAll());
 		}
 		reader.close();

@@ -8,5 +8,5 @@ public interface Constants {
 	String JDBC_URL = "jdbc.url";
 
 	String INSERT_QUERY_1NF =
-			"insert into aadhaar_user values(?,?,?,?,?,?,?,?,?,?,?,?)";
+			"insert into uidai.aadhaar_user values(nextval('uidai.uniqueid_sequence'),?,?,?,?,?,?,?,?,?,?,?,?);";
 }
