@@ -29,7 +29,7 @@ public class DataLoader1NF implements IDataLoader {
 		}
 	}
 	
-	public void loadUidaiData(List<String[]> csvValues) {
+	public void loadUidaiData(List<String[]> csvValues, String enrollmentDate) {
 		if (ps == null)
 			throw new RuntimeException("Prepared statement is null.");
 		
@@ -47,14 +47,20 @@ public class DataLoader1NF implements IDataLoader {
 					pin_code = Long.parseLong(row[5].trim());
 				}catch(NumberFormatException e){
 				}
+				int age = 0;
+
+				try{
+					age = Integer.parseInt(row[7].trim());
+				}catch (NumberFormatException e){
+				}
 				ps.setLong(6, pin_code);//pin code
 				ps.setString(7, row[6]);//gender
-				ps.setInt(8, Integer.parseInt(row[7].trim()));//age
-				ps.setBoolean(9, row[8].trim() == "1");//aadhaar generated?
-				ps.setBoolean(10, row[9].trim() == "1");//enrollment rejected?
-				ps.setBoolean(11, row[10].trim() == "1");//has email
-				ps.setBoolean(12, row[11].trim() == "1");//has phone
-				
+				ps.setInt(8, age);//age
+				ps.setInt(9, Integer.parseInt(row[8].trim()));//aadhaar generated?
+				ps.setInt(10, Integer.parseInt(row[9].trim()));//enrollment rejected?
+				ps.setInt(11, Integer.parseInt(row[10].trim()));//has email
+				ps.setInt(12, Integer.parseInt(row[11].trim()));//has phone
+				ps.setString(13, enrollmentDate);
 				ps.addBatch();
 				
 				if (++count % batchSize == 0)

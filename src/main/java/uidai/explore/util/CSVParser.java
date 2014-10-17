@@ -1,14 +1,13 @@
 package uidai.explore.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
-import au.com.bytecode.opencsv.CSVReader;
 import uidai.explore.dataloader.DataLoader1NF;
 import uidai.explore.intf.IDataLoader;
+import au.com.bytecode.opencsv.CSVReader;
 
 public final class CSVParser {
 
@@ -28,12 +27,17 @@ public final class CSVParser {
 				return name.endsWith(".csv");
 			}
 		});
-		
+		long st = System.currentTimeMillis();
 		CSVReader reader = null;
 		for (File file: files){
+			String fileName = file.getName();
+			String date = fileName.substring(fileName.lastIndexOf("-") + 1).replace(".csv", "");
+			System.out.println("Processing " + fileName);
 			reader = new CSVReader(new FileReader(file), CSVReader.DEFAULT_SEPARATOR, CSVReader.DEFAULT_QUOTE_CHARACTER, 1);
-			s_dataLoader.loadUidaiData(reader.readAll());
+			s_dataLoader.loadUidaiData(reader.readAll(), date);
+			System.out.println("Processed " + fileName);
 		}
 		reader.close();
+		System.out.println("Total time for loading " + files.length + " files: " + (System.currentTimeMillis() - st));
 	}
 }

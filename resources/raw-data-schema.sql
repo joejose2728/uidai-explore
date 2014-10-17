@@ -16,16 +16,17 @@ create sequence uidai.uniqueid_sequence
 create table uidai.aadhaar_user
 (
    aid bigint primary key default nextval('uidai.uniqueid_sequence'),
-   registrar varchar(50),
-   enrollement_agency varchar(50),
+   registrar varchar(100),
+   enrollement_agency varchar(100),
    state varchar(50),
    district varchar(50),
    sub_district varchar(50),
    pin_code bigint,
    gender char,
    age int,
-   aadhaar_generated boolean,
-   enrollment_rejected boolean,
-   has_email boolean,
-   has_phone_number boolean
+   aadhaar_generated int,
+   enrollment_rejected int,
+   email_provided int,
+   phone_number_provided int,
+   enrollment_date varchar(10)
 );
