@@ -47,19 +47,14 @@ public class DataLoader1NF implements IDataLoader {
 					pin_code = Long.parseLong(row[5].trim());
 				}catch(NumberFormatException e){
 				}
-				int age = 0;
-
-				try{
-					age = Integer.parseInt(row[7].trim());
-				}catch (NumberFormatException e){
-				}
+				
 				ps.setLong(6, pin_code);//pin code
 				ps.setString(7, row[6]);//gender
-				ps.setInt(8, age);//age
-				ps.setInt(9, Integer.parseInt(row[8].trim()));//aadhaar generated?
-				ps.setInt(10, Integer.parseInt(row[9].trim()));//enrollment rejected?
-				ps.setInt(11, Integer.parseInt(row[10].trim()));//has email
-				ps.setInt(12, Integer.parseInt(row[11].trim()));//has phone
+				ps.setInt(8, parseColumn(row[7]));//age
+				ps.setInt(9, parseColumn(row[8]));//aadhaar generated?
+				ps.setInt(10, parseColumn(row[9]));//enrollment rejected?
+				ps.setInt(11, parseColumn(row[10]));//has email
+				ps.setInt(12, parseColumn(row[11]));//has phone
 				ps.setString(13, enrollmentDate);
 				ps.addBatch();
 				
@@ -72,6 +67,15 @@ public class DataLoader1NF implements IDataLoader {
 		}catch (SQLException e){
 			e.printStackTrace();
 		}
+	}
+	
+	private int parseColumn(String col){
+		int val = 0;
+		try{
+			val = Integer.parseInt(col.trim());
+		}catch (NumberFormatException e){
+		}
+		return val;
 	}
 
 	public void close(){
