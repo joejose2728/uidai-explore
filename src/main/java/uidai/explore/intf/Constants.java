@@ -26,7 +26,7 @@ public interface Constants {
 	String GET_NO_OF_ENROLLMENTS_FOR_DATE_RANGE_GROUP_BY_STATE = "select state, sum(aadhaar_generated) from uidai.aadhaar_user"
 			+ " where enrollment_date between ? and ? group by state;";
 	
-<<<<<<< HEAD
+
 	// Hibernate 1NF queries
 	String HBN_GET_NO_OF_ENROLLMENTS_FOR_AGENCIES = "select new uidai.explore.util.Result(record.enrollmentAgency , sum(record.aadharGenerated)) from AadharRecord record"
 			+ " group by record.enrollmentAgency";
@@ -42,7 +42,7 @@ public interface Constants {
 	
 	String HBN_GET_NO_OF_ENROLLMENTS_FOR_DATE_RANGE_GROUP_BY_STATE = "select new uidai.explore.util.Result(record.state, sum(record.aadharGenerated)) from AadharRecord record"
 			+ " where record.enrollmentDate between :startDate and :endDate group by record.state";
-=======
+
 	//2NF Queries
 	String BEGIN_TRANSACTIONS = "BEGIN;";
 	
@@ -53,8 +53,8 @@ public interface Constants {
 	String INSERT_QUERY_2NF_LOCATION_DETAILS = 
 			"insert into uidai.location_details values(?,?,?,?)"; 
 	String END_TRANSACTION = "COMMIT;";
->>>>>>> 55f8c7751364074c9f541032bb1828a60a5ffc18
 }
+
 
 
 
