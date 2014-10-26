@@ -10,6 +10,22 @@ create sequence uidai.agid_sequence
     NO MAXVALUE
     CACHE 10;
 
+create table uidai.location_details
+  (
+    pin_code bigint primary key,
+    state varchar(50),
+    district varchar(50),
+    sub_district varchar(50)
+  );
+  
+create table uidai.agency_details
+(
+  agid bigint primary key default nextval('uidai.agid_sequence'),
+  registrar varchar(100),
+  enrollement_agency varchar(100),
+  pin_code bigint references uidai.location_details(pin_code)
+);
+
 create table uidai.aadhaar_record_per_day
   (
     enrollment_date date,
@@ -23,18 +39,6 @@ create table uidai.aadhaar_record_per_day
     PRIMARY KEY (enrollment_date, gender,age,agid)
   );
 
-create table uidai.agency_details
-  (
-    agid bigint primary key default nextval('uidai.agid_sequence'),
-    registrar varchar(100),
-    enrollement_agency varchar(100),
-    pin_code bigint references uidai.location_details(pin_code)
-  );
 
-create table uidai.location_details
-  (
-    pin_code bigint primary key,
-    state varchar(50),
-    district varchar(50),
-    sub_district varchar(50)
-  );
+
+
