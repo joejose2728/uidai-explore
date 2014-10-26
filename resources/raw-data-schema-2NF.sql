@@ -15,7 +15,7 @@ create table uidai.aadhaar_record_per_day
     enrollment_date date,
     gender char,
     age int,
-    agid bigint default nextval('uidai.agid_sequence'),
+    agid bigint references uidai.agency_details(agid),
     aadhaar_generated int,
     enrollment_rejected int,
     email_provided int,
@@ -25,15 +25,15 @@ create table uidai.aadhaar_record_per_day
 
 create table uidai.agency_details
   (
-    agid bigint references uidai.aadhaar_record_per_day(agid),
+    agid bigint primary key default nextval('uidai.agid_sequence'),
     registrar varchar(100),
     enrollement_agency varchar(100),
-    pin_code bigint
+    pin_code bigint references uidai.location_details(pin_code)
   );
 
 create table uidai.location_details
   (
-    pin_code bigint references uidai.agency_details(pin_code),
+    pin_code bigint primary key,
     state varchar(50),
     district varchar(50),
     sub_district varchar(50)

@@ -25,4 +25,21 @@ public interface Constants {
 	
 	String GET_NO_OF_ENROLLMENTS_FOR_DATE_RANGE_GROUP_BY_STATE = "select state, sum(aadhaar_generated) from uidai.aadhaar_user"
 			+ " where enrollment_date between ? and ? group by state;";
+	
+	//2NF Queries
+	String BEGIN_TRANSACTIONS = "BEGIN;";
+	
+	String INSERT_QUERY_2NF_AADHAR_RECORD = 
+			"insert into uidai.aadhaar_record_per_day values(?,?,?,?,?,?,?,?)";
+	String INSERT_QUERY_2NF_AGENCY_DETAILS = 
+			"insert into uidai.agency_details values(nextval('uidai.agid_sequence'),?,?,?)";
+	String INSERT_QUERY_2NF_LOCATION_DETAILS = 
+			"insert into uidai.location_details values(?,?,?,?)"; 
+	String END_TRANSACTION = "COMMIT;";
 }
+
+
+
+
+
+
