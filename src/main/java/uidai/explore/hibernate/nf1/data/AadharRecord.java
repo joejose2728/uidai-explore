@@ -12,7 +12,7 @@ public class AadharRecord {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="aid", updatable=false, nullable= false)
 	private long aid;
-	private String registrar;
+	private String registrar;	
 	private String enrollmentAgency;
 	private String state;
 	private String district;
