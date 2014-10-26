@@ -5,19 +5,18 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
-import uidai.explore.dataloader.DataLoader1NF;
 import uidai.explore.intf.IDataLoader;
 import au.com.bytecode.opencsv.CSVReader;
 
 public final class CSVParser {
 
-	private static IDataLoader s_dataLoader;
+	private IDataLoader dataLoader;
 	
-	static {
-		s_dataLoader = new DataLoader1NF();
+	public CSVParser(IDataLoader loader){
+		dataLoader = loader;
 	}
 	
-	public static void loadCSVFilesToDatabase(/*String database,*/ File csvDirectory) throws IOException{
+	public void loadCSVFilesToDatabase(/*String database,*/ File csvDirectory) throws IOException{
 		if (!csvDirectory.isDirectory())
 			throw new RuntimeException("Specified file is not a directory");
 		
@@ -34,7 +33,7 @@ public final class CSVParser {
 			String date = fileName.substring(fileName.lastIndexOf("-") + 1).replace(".csv", "");
 			System.out.println("Processing " + fileName);
 			reader = new CSVReader(new FileReader(file), CSVReader.DEFAULT_SEPARATOR, CSVReader.DEFAULT_QUOTE_CHARACTER, 1);
-			s_dataLoader.loadUidaiData(reader.readAll(), date);
+			dataLoader.loadUidaiData(reader.readAll(), date);
 			System.out.println("Processed " + fileName);
 		}
 		reader.close();

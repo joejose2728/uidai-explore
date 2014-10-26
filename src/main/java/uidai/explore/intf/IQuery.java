@@ -2,11 +2,11 @@ package uidai.explore.intf;
 
 import java.util.List;
 
-import uidai.explore.nf1.model.AadhaarUser;
+import uidai.explore.util.Result;
 
 public interface IQuery {
 
-	public String getStateWithMaxEnrollments();
+	/*public String getStateWithMaxEnrollments();
 	
 	public String getStateWithMinEnrollments();
 	
@@ -24,6 +24,16 @@ public interface IQuery {
 	
 	public int getNoOfWorkingClassCitizensEnrolled();
 	
-	public List<AadhaarUser> getAllEnrolledUsers(); 
+	public List<AadhaarUser> getAllEnrolledUsers(); */
 	
+	
+	public List<Result> getNoOfEnrollmentsForAgencies();
+	
+	public List<Result> getNoOfRejectionsForAgencies();
+	
+	public List<Result> getNoOfSeniorCitizensEnrolledGroupedByGender();
+	
+	public List<Result> getNoOfAadhaarUsersProvidingPhoneGroupedByState();
+	
+	public List<Result> getNoOfAadhaarGeneratedForDateRangeGroupedByState(String startDate, String endDate);
 }
