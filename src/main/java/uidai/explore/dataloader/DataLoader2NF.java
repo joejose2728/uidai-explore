@@ -3,6 +3,7 @@ package uidai.explore.dataloader;
 import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class DataLoader2NF implements IDataLoader {
 	private Connection connection;
 	
 	@SuppressWarnings("unused")
-	private PreparedStatement ps1, ps2, ps3;
+	private PreparedStatement ps1, ps2, ps3,ps4;
 	
 	public DataLoader2NF(){
 		init();
@@ -28,6 +29,7 @@ public class DataLoader2NF implements IDataLoader {
 				ps1 = connection.prepareStatement(Constants.INSERT_QUERY_2NF_LOCATION_DETAILS);
 				ps2 = connection.prepareStatement(Constants.INSERT_QUERY_2NF_AGENCY_DETAILS);
 				ps3 = connection.prepareStatement(Constants.INSERT_QUERY_2NF_AADHAR_RECORD);
+				ps4 = connection.prepareStatement(Constants.GET_AGID);
 								
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -38,10 +40,10 @@ public class DataLoader2NF implements IDataLoader {
 	public void loadUidaiData(List<String[]> csvValues, String enrollmentData) {
 		if (ps1 == null)
 			throw new RuntimeException("Prepared statement is null.");
-		
-		final int batchSize = 10000;
-		int count = 0;
-		try {
+				
+		try { 
+			connection.setAutoCommit(false);  //start transaction  
+			
 			 for (String[] row: csvValues){
 		      //==========location details =============
 			    long pin_code = 000000;
@@ -49,39 +51,53 @@ public class DataLoader2NF implements IDataLoader {
 						pin_code = Long.parseLong(row[5].trim());
 					}catch(NumberFormatException e){
 					}
-				ps1.setLong(6, pin_code);//pin code
-				ps1.setString(5, row[4]);//sub-district
-      			ps1.setString(4, row[3]);//district
-				ps1.setString(3, row[2]);//state
-               
+				ps1.setLong(1, pin_code);//pin code
+				ps1.setString(2, row[2]);//state 
+				ps1.setString(3, row[3]);//district
+				ps1.setString(4, row[4]);//sub-district      			
+				ps1.setLong(5, pin_code);//pin code in where clause 
+				
+				ps1.executeUpdate();
+				
                //=============Agency details===========
                 ps2.setString(1, row[0]);//registrar
 				ps2.setString(2, row[1]);//ea
-      			ps2.setLong(6, pin_code);//pin code
+      			ps2.setLong(3, pin_code);//pin code 
+      			
+      			ps2.setString(4, row[0]);//registrar in where clause 
+				ps2.setString(5, row[1]);//ea in where clause 
+      			ps2.setLong(6, pin_code);//pin code in where clause 
+      			      			
+      			ps2.executeUpdate();
+				ResultSet rs = ps2.getGeneratedKeys();
+				long returned_agid;
+				
+				if(rs.first()){
+					returned_agid = rs.getLong(1);
+				}else{
+					ps4.setString(1, row[0]);//registrar
+					ps4.setString(2, row[1]);//ea
+		      		ps4.setLong(3, pin_code);//pin code 
+		      		
+		      		ResultSet rs2 = ps4.executeQuery(); 
+		      		returned_agid=rs2.getLong(1);
+				}
 				
 				//============Aadhaar_Record_Per_Day========
-				ps3.setString(13, enrollmentData);
-				ps3.setString(7, row[6]);//gender
-				ps3.setInt(8, parseColumn(row[7]));//age
-				ps3.setInt(9, parseColumn(row[8]));//aadhaar generated?
-				ps3.setInt(10, parseColumn(row[9]));//enrollment rejected?
-				ps3.setInt(11, parseColumn(row[10]));//has email
-				ps3.setInt(12, parseColumn(row[11]));//has phone
+				ps3.setString(1, enrollmentData); 
+				ps3.setString(2, row[6]);//gender
+				ps3.setInt(3, parseColumn(row[7]));//age
+				ps3.setLong(4,returned_agid);
+				ps3.setInt(5, parseColumn(row[8]));//aadhaar generated?
+				ps3.setInt(6, parseColumn(row[9]));//enrollment rejected?
+				ps3.setInt(7, parseColumn(row[10]));//has email
+				ps3.setInt(8, parseColumn(row[11]));//has phone 
 				
-				ps1.addBatch();
-				ps2.addBatch();
-				ps3.addBatch();
+				ps3.executeUpdate();
 				
-				if (++count % batchSize == 0)
-					ps1.executeBatch();
-				    ps2.executeBatch();
-				    ps3.executeBatch(); 
+				connection.commit(); // end transaction				   
 			 }
 			 
-			 ps1.executeBatch();
-			 ps2.executeBatch();
-			 ps3.executeBatch();
-		
 		} catch (BatchUpdateException e) {
 			e.getNextException().printStackTrace();
 		}catch (SQLException e){

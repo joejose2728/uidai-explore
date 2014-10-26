@@ -51,7 +51,7 @@ public interface Constants {
 			"insert into uidai.agency_details (agid,registrar,enrollement_agency,pin_code) select nextval('uidai.agid_sequence'),?,?,? where not exists (select 1 from uidai.agency_details where registrar=? and enrollement_agency=? and pin_code=?);";
 	String INSERT_QUERY_2NF_AADHAR_RECORD = 
 			"insert into uidai.aadhaar_record_per_day values(?,?,?,?,?,?,?,?);";
-
+    String GET_AGID = "select agid from uidai.agency_details where registrar=? and enrollement_agency=? and pin_code=?;";
 
 }
 
