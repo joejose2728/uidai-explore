@@ -1,5 +1,5 @@
 /target
-
+/resources/db.properties
 .classpath
 .project
 /.settings
