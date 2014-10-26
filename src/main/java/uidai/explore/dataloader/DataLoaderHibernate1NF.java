@@ -43,6 +43,7 @@ public class DataLoaderHibernate1NF implements IDataLoader{
 					try{
 						pin_code = Long.parseLong(row[5].trim());
 					}catch(NumberFormatException e){
+						System.err.println("Error parsing the pin code");
 					}
 					
 				record.setPinCode(pin_code);//pin code
@@ -79,6 +80,7 @@ public class DataLoaderHibernate1NF implements IDataLoader{
 		try{
 			val = Integer.parseInt(col.trim());
 		}catch (NumberFormatException e){
+			System.err.println("Error while parsing column:"+col);
 		}
 		return val;
 	}

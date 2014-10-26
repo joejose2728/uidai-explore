@@ -26,7 +26,25 @@ public interface Constants {
 	String GET_NO_OF_ENROLLMENTS_FOR_DATE_RANGE_GROUP_BY_STATE = "select state, sum(aadhaar_generated) from uidai.aadhaar_user"
 			+ " where enrollment_date between ? and ? group by state;";
 	
-	//2NF Queries	
+
+
+	// Hibernate 1NF queries
+	String HBN_GET_NO_OF_ENROLLMENTS_FOR_AGENCIES = "select new uidai.explore.util.Result(record.enrollmentAgency , sum(record.aadharGenerated)) from AadharRecord record"
+			+ " group by record.enrollmentAgency";
+	
+	String HBN_GET_NO_OF_REJECTIONS_FOR_AGENCIES = "select new uidai.explore.util.Result(record.enrollmentAgency, sum(record.enrollmentRejected)) from AadharRecord record"
+			+ " group by record.enrollmentAgency";
+	
+	String HBN_GET_NO_OF_SENIOR_CITIZENS_ENROLLED_GROUP_BY_GENDER = "select new uidai.explore.util.Result(record.gender, sum(record.aadharGenerated)) from AadharRecord record"
+			+ " where record.age >= 65 group by record.gender";
+	
+	String HBN_GET_NO_OF_USERS_PROVIDING_PHONE_NUMBER_GROUP_BY_STATE = "select new uidai.explore.util.Result(record.state, sum(record.phoneNumberProvided)) from AadharRecord record"
+			+ " group by record.state";
+	
+	String HBN_GET_NO_OF_ENROLLMENTS_FOR_DATE_RANGE_GROUP_BY_STATE = "select new uidai.explore.util.Result(record.state, sum(record.aadharGenerated)) from AadharRecord record"
+			+ " where record.enrollmentDate between :startDate and :endDate group by record.state";
+
+	//2NF Queries
 	String INSERT_QUERY_2NF_LOCATION_DETAILS = 
 			"insert into uidai.location_details (pin_code,state,district,sub_district) select ?,?,?,? where not exists (select 1 from uidai.location_details where pin_code=?);"; 
 	String INSERT_QUERY_2NF_AGENCY_DETAILS = 
@@ -36,6 +54,7 @@ public interface Constants {
 
 
 }
+
 
 
 
