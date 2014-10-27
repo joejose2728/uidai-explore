@@ -5,7 +5,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import org.postgresql.util.PSQLException;
 
 import uidai.explore.intf.Constants;
 import uidai.explore.intf.IDataLoader;
@@ -68,23 +74,31 @@ public class DataLoader2NF implements IDataLoader {
 				ps2.setString(5, row[1]);//ea in where clause 
       			ps2.setLong(6, pin_code);//pin code in where clause 
       			      			
-      			ps2.executeUpdate();
+      			ps2.execute();
 				ResultSet rs = ps2.getGeneratedKeys();
-				long returned_agid;
+				long returned_agid = 0;
 				
-				if(rs.first()){
+				if(rs.next()){
 					returned_agid = rs.getLong(1);
 				}else{
 					ps4.setString(1, row[0]);//registrar
 					ps4.setString(2, row[1]);//ea
 		      		ps4.setLong(3, pin_code);//pin code 
 		      		
-		      		ResultSet rs2 = ps4.executeQuery(); 
-		      		returned_agid=rs2.getLong(1);
+		      		ResultSet rs2 = ps4.executeQuery();
+					if (rs2.next())
+						returned_agid=rs2.getLong(1);
 				}
 				
 				//============Aadhaar_Record_Per_Day========
-				ps3.setString(1, enrollmentData); 
+				DateFormat df = new SimpleDateFormat("yyyyMMdd");
+				try {
+					Date d = df.parse(enrollmentData);
+					ps3.setDate(1, new java.sql.Date(d.getTime()));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
 				ps3.setString(2, row[6]);//gender
 				ps3.setInt(3, parseColumn(row[7]));//age
 				ps3.setLong(4,returned_agid);
@@ -93,14 +107,18 @@ public class DataLoader2NF implements IDataLoader {
 				ps3.setInt(7, parseColumn(row[10]));//has email
 				ps3.setInt(8, parseColumn(row[11]));//has phone 
 				
-				ps3.executeUpdate();
-				
+				try
+				{
+					// handling exception in case of incorrect data - same pincode occuring for multiple sub-districts
+					// if this is not handled, primary key relation 
+					ps3.executeUpdate(); 
+				}catch(PSQLException e){
+					System.out.println("same pincode occuring for multiple sub-districts");
+				}
 				connection.commit(); // end transaction				   
 			 }
 			 
-		} catch (BatchUpdateException e) {
-			e.getNextException().printStackTrace();
-		}catch (SQLException e){
+		} catch (SQLException e){
 			e.printStackTrace();
 		}
 		
