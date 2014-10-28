@@ -64,7 +64,7 @@ public interface Constants {
 	
 	String GET_NO_OF_USERS_PROVIDING_PHONE_NUMBER_GROUP_BY_STATE_2NF = "select state,sum(phone_number_provided) from uidai.aadhaar_record_per_day,(select agid,state from uidai.agency_details,uidai.location_details where uidai.agency_details.pin_code=uidai.location_details.pin_code) as t where uidai.aadhaar_record_per_day.agid=t.agid group by state order by sum desc;";
 	
-	String GET_NO_OF_ENROLLMENTS_FOR_DATE_RANGE_GROUP_BY_STATE_2NF = "select state,sum(aadhaar_generated) from uidai.aadhaar_record_per_day,(select agid,state from uidai.agency_details,uidai.location_details where uidai.agency_details.pin_code=uidai.location_details.pin_code) as t where uidai.aadhaar_record_per_day.agid=t.agid and enrollment_date between '2012-01-01' and '2012-12-31' group by state order by sum desc;";
+	String GET_NO_OF_ENROLLMENTS_FOR_DATE_RANGE_GROUP_BY_STATE_2NF = "select state,sum(aadhaar_generated) from uidai.aadhaar_record_per_day,(select agid,state from uidai.agency_details,uidai.location_details where uidai.agency_details.pin_code=uidai.location_details.pin_code) as t where uidai.aadhaar_record_per_day.agid=t.agid and enrollment_date between to_date(?,'YYYYMMDD') and to_date(?,'YYYYMMDD') group by state order by sum desc;";
     
     
 }
