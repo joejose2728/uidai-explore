@@ -53,9 +53,38 @@ public interface Constants {
 	String INSERT_QUERY_2NF_LOCATION_DETAILS = 
 			"insert into uidai.location_details values(?,?,?,?)"; 
 	String END_TRANSACTION = "COMMIT;";
+	
+	
+	//Hibernate 2NF
+	
+	String find_agencyDetails_by_pincode_registrar_agencyName = "from AgencyDetails agencyDetails where agencyDetails.registrar =:registrar "
+			+ "and agencyDetails.enrollmentAgency=:agencyName and agencyDetails.pincode=:pincode";
+	
+	String HBN_2NF_GET_NO_OF_ENROLLMENTS_FOR_AGENCIES = "select new uidai.explore.util.Result(agencyDetails.enrollmentAgency , "
+			+ "sum(recordPerDay.aadharGenerated)) from AgencyDetails agencyDetails inner join agencyDetails.aadharrecords recordPerDay"
+			+ " group by agencyDetails.enrollmentAgency";
+	
+
+	String HBN_2NF_GET_NO_OF_REJECTIONS_FOR_AGENCIES = "select new uidai.explore.util.Result(agencyDetails.enrollmentAgency , "
+			+ "sum(recordPerDay.enrollmentRejected)) from AgencyDetails agencyDetails inner join agencyDetails.aadharrecords recordPerDay"
+			+ " group by agencyDetails.enrollmentAgency";
+	
+	String HBN_2NF_GET_NO_OF_SENIOR_CITIZENS_ENROLLED_GROUP_BY_GENDER = "select new uidai.explore.util.Result(record.key.gender, sum(record.aadharGenerated))"
+			+ "from AadharRecordPerDay record"
+			+ " where record.key.age >= 65 group by record.key.gender";
+	
+
+	String HBN_2NF_GET_NO_OF_USERS_PROVIDING_PHONE_NUMBER_GROUP_BY_STATE = "select "
+			+ "new uidai.explore.util.Result(locationDetails.state, sum(record.residentsWithMobileNumber)) from LocationDetails locationDetails"
+			+ " inner join locationDetails.agencyDetails agencyDetails inner join agencyDetails.aadharrecords record"
+			+ " group by locationDetails.state";
+	
+	String HBN_2NF_GET_NO_OF_ENROLLMENTS_FOR_DATE_RANGE_GROUP_BY_STATE = "select new uidai.explore.util.Result(locationDetails.state, sum(record.aadharGenerated)) "
+			+ "from LocationDetails locationDetails inner join locationDetails.agencyDetails agencyDetails inner join agencyDetails.aadharrecords record"
+			+ " where record.key.date between :startDate and :endDate group by locationDetails.state";
+
+	
 }
-
-
 
 
 

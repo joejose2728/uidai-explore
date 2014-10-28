@@ -35,6 +35,9 @@
 		<property name="hibernate.default_schema">uidai</property>
 
 		<mapping class="uidai.explore.hibernate.nf1.data.AadharRecord"/>
+		<mapping class="uidai.explore.hibernate.nf1.data.AadharRecordPerDay"/>
+		<mapping class="uidai.explore.hibernate.nf1.data.AgencyDetails"/>
+		<mapping class="uidai.explore.hibernate.nf1.data.LocationDetails"/>
 		
 	</session-factory>
 
