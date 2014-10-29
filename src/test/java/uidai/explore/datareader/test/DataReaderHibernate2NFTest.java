@@ -1,4 +1,6 @@
-package uidai.explore.dataloader.test;
+package uidai.explore.datareader.test;
+
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -7,15 +9,16 @@ import org.junit.Test;
 
 import uidai.explore.intf.IQuery;
 import uidai.explore.query.impl.DataReader1NF;
+import uidai.explore.query.impl.DataReaderHibernate2NF;
 import uidai.explore.util.Result;
 
-public class DataReader1NFTest {
+public class DataReaderHibernate2NFTest {
 
-	private static IQuery query;
+private static IQuery query;
 	
 	@BeforeClass
 	public static void setUp(){
-		query = new DataReader1NF();
+		query = new DataReaderHibernate2NF();
 	}
 	
 	@Test
@@ -67,6 +70,5 @@ public class DataReader1NFTest {
 			System.out.println(result.getGroupedAttribute() + "\t\t\t" + result.getCount());
 		}
 	}
-
 
 }

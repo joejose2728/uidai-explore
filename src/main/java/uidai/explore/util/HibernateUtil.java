@@ -1,4 +1,4 @@
-package uidai.explore.hibernate.nf1.util;
+package uidai.explore.util;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

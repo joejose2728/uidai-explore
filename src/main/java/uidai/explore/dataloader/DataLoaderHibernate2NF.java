@@ -14,8 +14,8 @@ import uidai.explore.hibernate.nf1.data.AadharRecPerDayKey;
 import uidai.explore.hibernate.nf1.data.AadharRecordPerDay;
 import uidai.explore.hibernate.nf1.data.AgencyDetails;
 import uidai.explore.hibernate.nf1.data.LocationDetails;
-import uidai.explore.hibernate.nf1.util.HibernateUtil;
 import uidai.explore.intf.IDataLoader;
+import uidai.explore.util.HibernateUtil;
 
 public class DataLoaderHibernate2NF implements IDataLoader{
 

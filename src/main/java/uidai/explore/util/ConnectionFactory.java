@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import uidai.explore.intf.Constants;
+import uidai.explore.shard.conf.Node;
 
 public class ConnectionFactory {
 	
@@ -47,6 +48,16 @@ public class ConnectionFactory {
 		try {
 			return DriverManager.getConnection(s_cfg.getProperty(Constants.JDBC_URL),
 					s_cfg.getProperty(Constants.JDBC_USER), s_cfg.getProperty(Constants.JDBC_PASSWORD));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Connection getConnection(Node node){
+		try {
+			return DriverManager.getConnection(node.getURL(),
+					node.getUserName(), node.getPassword());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

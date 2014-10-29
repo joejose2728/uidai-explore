@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Locale;
 
 import uidai.explore.hibernate.nf1.data.AadharRecord;
-import uidai.explore.hibernate.nf1.util.HibernateUtil;
 import uidai.explore.intf.IDataLoader;
+import uidai.explore.util.HibernateUtil;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -18,7 +18,7 @@ public class DataLoaderHibernate1NF implements IDataLoader{
 	public void loadUidaiData(List<String[]> csvValues, String enrollmentDate) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		
-		final int batchSize = 1000;
+		final int batchSize = 10000;
 		int cnt =0;
 		Date date = null;
 		

@@ -11,9 +11,9 @@ import java.util.Set;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import uidai.explore.hibernate.nf1.util.HibernateUtil;
 import uidai.explore.intf.Constants;
 import uidai.explore.intf.IQuery;
+import uidai.explore.util.HibernateUtil;
 import uidai.explore.util.Result;
 
 public class DataReaderHibernate2NF implements IQuery{

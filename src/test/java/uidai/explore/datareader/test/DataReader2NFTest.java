@@ -1,4 +1,4 @@
-package uidai.explore.dataloader.test;
+package uidai.explore.datareader.test;
 
 import java.util.List;
 

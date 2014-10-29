@@ -20,6 +20,10 @@ public class DataReader1NF implements IQuery {
 		init();
 	}
 	
+	public DataReader1NF(Connection connection){
+		this.connection = connection;
+	}
+	
 	private void init(){
 		connection = ConnectionFactory.getInstance().getConnection();
 	}

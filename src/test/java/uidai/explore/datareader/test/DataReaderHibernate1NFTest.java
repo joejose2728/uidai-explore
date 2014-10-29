@@ -1,6 +1,4 @@
-package uidai.explore.dataloader.test;
-
-import static org.junit.Assert.*;
+package uidai.explore.datareader.test;
 
 import java.util.List;
 
@@ -8,17 +6,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import uidai.explore.intf.IQuery;
-import uidai.explore.query.impl.DataReader1NF;
-import uidai.explore.query.impl.DataReaderHibernate2NF;
+import uidai.explore.query.impl.DataReaderHibernate1NF;
 import uidai.explore.util.Result;
 
-public class DataReaderHibernate2NFTest {
+public class DataReaderHibernate1NFTest {
 
-private static IQuery query;
-	
+	private static IQuery query;
+		
 	@BeforeClass
 	public static void setUp(){
-		query = new DataReaderHibernate2NF();
+		query = new DataReaderHibernate1NF();
 	}
 	
 	@Test
@@ -63,7 +60,7 @@ private static IQuery query;
 
 	@Test
 	public void testGetNoOfAadhaarGeneratedForDateRangeGroupedByState() {
-		List<Result> results = query.getNoOfAadhaarGeneratedForDateRangeGroupedByState("20120101", "20120102");
+		List<Result> results = query.getNoOfAadhaarGeneratedForDateRangeGroupedByState("20120101", "20120131");
 		System.out.println("State\t\t\tCount");
 		System.out.println("=================================================================");
 		for (Result result : results){
