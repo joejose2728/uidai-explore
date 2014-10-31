@@ -12,8 +12,8 @@
  - Run JUnit tests for data loading and reading (JDBC and ORM)
 
     1. Test cases are organized into dataloader and datareader Java packages
- 	  2. Sample test data is located in \resources\test-data
-   	3. Schema for JDBC 1NF and 2NF designs are located in \resources
+    2. Sample test data is located in \resources\test-data
+    3. Schema for JDBC 1NF and 2NF designs are located in \resources
     4. Hibernate config is located in \src\test\resources
 
  -  Sharding classes are in the package uidai.explore.shard
